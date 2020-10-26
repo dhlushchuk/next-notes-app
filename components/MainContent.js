@@ -8,7 +8,7 @@ import { FirebaseContext } from '../context/firebase/firebaseContext'
 import { AlertContext } from '../context/alert/alertContext'
 
 const MainContent = () => {
-    const {loading, notes, fetchNotes, removeNote} = useContext(FirebaseContext)
+    const {loading, notes, fetchNotes, removeNote, editNote} = useContext(FirebaseContext)
     const alert = useContext(AlertContext)
     useEffect(() => {
         fetchNotes() //eslint-disable-next-line
@@ -18,13 +18,18 @@ const MainContent = () => {
             alert.show('Заметка была удалена', 'success')
         })
     }
+    const submitEdit = (id, title) => {
+        editNote(id, title).then(() => {
+            alert.show('Заметка была изменена', 'success')
+        })
+    }
     return(
         <Fragment>
             <Alert />
             <Form />
             <hr />
             {/* <Notes notes={notes} onRemove={submitRemove} /> */}
-            {loading? <Loader/> : <Notes notes={notes} onRemove={submitRemove} />}
+            {loading? <Loader/> : <Notes notes={notes} onEdit={submitEdit} onRemove={submitRemove} />}
         </Fragment>
     )
 }

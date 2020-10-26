@@ -2,7 +2,7 @@ import { useReducer} from 'react'
 import { FirebaseContext } from './firebaseContext'
 import { fireBaseReducer } from './firebaseReducer'
 import axios from 'axios'
-import { SHOW_LOADER, REMOVE_NOTE, ADD_NOTE, FETCH_NOTES, HIDE_LOADER } from '../types'
+import { SHOW_LOADER, REMOVE_NOTE, ADD_NOTE, FETCH_NOTES, EDIT_NOTE, HIDE_LOADER } from '../types'
 
 const url = 'https://react-notes-95ce9.firebaseio.com'
 
@@ -56,6 +56,26 @@ const FirebaseState = ({children}) => {
             throw new Error(e.message)
         }
     }
+    //
+    const editNote = async (id, title) => {
+        const note = {
+            title, date: new Date().toJSON()
+        }
+        try {
+            await axios.put(`${url}/notes/${id}.json`, note)
+            const payload = {
+                ...note, 
+                id
+            }
+            dispatch({
+                type: EDIT_NOTE,
+                payload
+            })
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
+
     const removeNote = async (id) => {
         await axios.delete(`${url}/notes/${id}.json`)
         dispatch({
@@ -64,7 +84,7 @@ const FirebaseState = ({children}) => {
         })
     }
     return(
-        <FirebaseContext.Provider value={{showLoader, fetchNotes, addNote, removeNote, loading: state.loading, notes: state.notes}}>
+        <FirebaseContext.Provider value={{showLoader, fetchNotes, addNote, editNote, removeNote, loading: state.loading, notes: state.notes}}>
             {children}
         </FirebaseContext.Provider>
     )

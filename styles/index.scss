@@ -36,7 +36,21 @@ code {
   }
 }
 
+.btn {
+  margin-left: .5em;
+  width: 1.9em;
+  &-edit {
+    background-image: url('./draw.svg');
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
 .note {
+  &-add-text {
+    text-align: center;
+  }
   &-exit-active {
     animation: note 800ms ease-out forwards;
   }
