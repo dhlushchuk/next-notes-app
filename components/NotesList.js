@@ -25,7 +25,7 @@ const NotesList = ({notes, onRemove, onEdit}) => {
                             <button type='button' onClick={() => {
                                 edit? setEdit(false) : setEdit(true)
                                 setEditInputValue(note.title)}} 
-                            className='btn btn-sm btn-outline-primary btn-edit'>&nbsp;&nbsp;</button>
+                            className='btn btn-sm btn-outline-primary btn-edit'></button>
                             <button onClick={() => onRemove(note.id)} type='button' className='btn btn-outline-danger btn-sm'>&times;</button>
                         </div>
                     </li>
