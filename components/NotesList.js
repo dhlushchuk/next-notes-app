@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 const NotesList = ({notes, onRemove, onEdit}) => {
-    const [edit, setEdit] = useState(false)
+    const [edit, setEdit] = useState({show: false, inputId: ''})
     const [editInputValue, setEditInputValue] = useState('')
     const submitHandler = (id, e) => {
         e.preventDefault()
@@ -15,7 +15,7 @@ const NotesList = ({notes, onRemove, onEdit}) => {
                 <CSSTransition timeout={800} classNames={'note'} key={note.id}>
                     <li className='list-group-item note'>
                         <div> 
-                        {edit? <form onSubmit={(e) => submitHandler(note.id, e)}>
+                        {edit.show && edit.inputId == note.id? <form onSubmit={(e) => submitHandler(note.id, e)}>
                             <input type='text' defaultValue={note.title} value={editInputValue} onChange={(e) => setEditInputValue(e.target.value)}></input>
                         </form> :
                             <strong>{note.title}</strong>}
@@ -23,9 +23,9 @@ const NotesList = ({notes, onRemove, onEdit}) => {
                         </div>
                         <div>
                             <button type='button' onClick={() => {
-                                edit? setEdit(false) : setEdit(true)
+                                edit.show? setEdit({show: false, inputId: ''}) : setEdit({show: true, inputId: note.id})
                                 setEditInputValue(note.title)}} 
-                            className='btn btn-sm btn-outline-primary btn-edit'></button>
+                            className='btn btn-sm btn-outline-primary btn-edit'>&nbsp;&nbsp;</button>
                             <button onClick={() => onRemove(note.id)} type='button' className='btn btn-outline-danger btn-sm'>&times;</button>
                         </div>
                     </li>
